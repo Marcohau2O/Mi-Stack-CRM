@@ -21,6 +21,5 @@ export default defineConfig({
     watch: {
       usePolling: true
     }
-    ,allowedHosts: ['hmcrm.duckdns.org']
   }
 })
