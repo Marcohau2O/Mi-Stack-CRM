@@ -54,11 +54,11 @@
             <button type="button" @click="showTerms = true" class="link-button">Términos y condiciones</button>
           </div>
 
-          <div
+          <!-- <div
             class="g-recaptcha"
             ref="recaptcha"
             :data-sitekey="recaptchaSiteKey"
-          ></div>
+          ></div> -->
 
           <button type="submit" class="btn btn-primary btn-submit" :disabled="isLoading">
             <span v-if="isLoading">Enviando...</span>
@@ -103,11 +103,11 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, ref } from 'vue'
+// import { useRouter } from 'vue-router'
 import emailjs from 'emailjs-com'
 
-const router = useRouter()
+// const router = useRouter()
 
 const emailjsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const emailjsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
@@ -125,43 +125,43 @@ const success = ref(false)
 const error = ref('')
 const showTerms = ref(false)
 
-const recaptcha = ref(null)
-const recaptchaWidgetId = ref(null)
+// const recaptcha = ref(null)
+// const recaptchaWidgetId = ref(null)
 
 const apiUrl = import.meta.env.VITE_API_URL
-const recaptchaSiteKey = import.meta.env.VITE_SITE_KEY
+// const recaptchaSiteKey = import.meta.env.VITE_SITE_KEY
 
 const isLoading = ref(false)
 
-if (!recaptchaSiteKey) {
-  console.error('❌ No se encontró VITE_SITE_KEY en tu archivo .env')
-}
+// if (!recaptchaSiteKey) {
+//   console.error('❌ No se encontró VITE_SITE_KEY en tu archivo .env')
+// }
 
-onMounted(() => {
-  const renderCaptcha = () => {
-    if (
-      window.grecaptcha &&
-      recaptcha.value &&
-      recaptcha.value.children.length === 0 &&
-      recaptchaWidgetId.value === null
-    ) {
-      recaptchaWidgetId.value = grecaptcha.render(recaptcha.value, {
-        sitekey: recaptchaSiteKey
-      })
-    }
-  }
+// onMounted(() => {
+//   const renderCaptcha = () => {
+//     if (
+//       window.grecaptcha &&
+//       recaptcha.value &&
+//       recaptcha.value.children.length === 0 &&
+//       recaptchaWidgetId.value === null
+//     ) {
+//       recaptchaWidgetId.value = grecaptcha.render(recaptcha.value, {
+//         sitekey: recaptchaSiteKey
+//       })
+//     }
+//   }
 
-  if (window.grecaptcha) {
-    renderCaptcha()
-  } else {
-    const interval = setInterval(() => {
-      if (window.grecaptcha) {
-        renderCaptcha()
-        clearInterval(interval)
-      }
-    }, 300)
-  }
-})
+//   if (window.grecaptcha) {
+//     renderCaptcha()
+//   } else {
+//     const interval = setInterval(() => {
+//       if (window.grecaptcha) {
+//         renderCaptcha()
+//         clearInterval(interval)
+//       }
+//     }, 300)
+//   }
+// })
 
 const handleSubmit = async () => {
   if (!form.acceptedTerms) {
@@ -169,29 +169,29 @@ const handleSubmit = async () => {
     return
   }
 
-  if (!window.grecaptcha || recaptchaWidgetId.value === null) {
-    error.value = 'reCAPTCHA aún no está listo.'
-    return
-  }
+  // if (!window.grecaptcha || recaptchaWidgetId.value === null) {
+  //   error.value = 'reCAPTCHA aún no está listo.'
+  //   return
+  // }
 
-  const recaptchaToken = grecaptcha.getResponse(recaptchaWidgetId.value)
-  if (!recaptchaToken) {
-    error.value = 'Completa el reCAPTCHA antes de continuar.'
-    return
-  }
+  // const recaptchaToken = grecaptcha.getResponse(recaptchaWidgetId.value)
+  // if (!recaptchaToken) {
+  //   error.value = 'Completa el reCAPTCHA antes de continuar.'
+  //   return
+  // }
   
   isLoading.value = true
   try {
     const res = await fetch(`${apiUrl}/contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, recaptchaToken })
+      body: JSON.stringify({ ...form })
     })
 
     if (res.ok) {
       success.value = true
       error.value = ''
-      grecaptcha.reset(recaptchaWidgetId.value)
+      // grecaptcha.reset(recaptchaWidgetId.value)
 
       await emailjs.send(
         emailjsServiceId,

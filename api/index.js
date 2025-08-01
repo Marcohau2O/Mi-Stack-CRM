@@ -82,24 +82,24 @@ app.post('/api/register', async (req, res) => {
 
 
 app.post('/api/contact', async (req, res) => {
-  const { name, email, phone, message, recaptchaToken } = req.body
+  const { name, email, phone, message } = req.body
 
   // Validar reCAPTCHA
-  try {
-    const verify = await axios.post(
-      'https://www.google.com/recaptcha/api/siteverify',
-      new URLSearchParams({
-        secret: RECAPTCHA_SECRET_KEY,
-        response: recaptchaToken
-      })
-    )
+  // try {
+  //   const verify = await axios.post(
+  //     'https://www.google.com/recaptcha/api/siteverify',
+  //     new URLSearchParams({
+  //       secret: RECAPTCHA_SECRET_KEY,
+  //       response: recaptchaToken
+  //     })
+  //   )
 
-    if (!verify.data.success) {
-      return res.status(400).json({ error: 'Error de reCAPTCHA' })
-    }
-  } catch (err) {
-    return res.status(500).json({ error: 'Error validando reCAPTCHA' })
-  }
+  //   if (!verify.data.success) {
+  //     return res.status(400).json({ error: 'Error de reCAPTCHA' })
+  //   }
+  // } catch (err) {
+  //   return res.status(500).json({ error: 'Error validando reCAPTCHA' })
+  // }
 
   const cleanName = validator.escape(validator.trim(name || ''))
   const cleanEmail = validator.normalizeEmail(email || '')
