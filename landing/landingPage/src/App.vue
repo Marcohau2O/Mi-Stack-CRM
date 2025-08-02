@@ -193,17 +193,17 @@ const handleSubmit = async () => {
       error.value = ''
       // grecaptcha.reset(recaptchaWidgetId.value)
 
-      await emailjs.send(
-        emailjsServiceId,
-        emailjsTemplateId,
-        {
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          message: form.message
-        },
-        emailjsUserId
-      )
+      // await emailjs.send(
+      //   emailjsServiceId,
+      //   emailjsTemplateId,
+      //   {
+      //     name: form.name,
+      //     email: form.email,
+      //     phone: form.phone,
+      //     message: form.message
+      //   },
+      //   emailjsUserId
+      // )
 
       Object.assign(form, {
         name: '',
